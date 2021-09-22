@@ -1,36 +1,35 @@
 {
-  "name": "encryptor",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
-  },
+  "name": "cryptor",
+  "version": "1.0.0",
+  "description": "An app that encrypts and decrypts messages using a custom made symmetric-key algorithm",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node index.js",
+    "startDev": "nodemon index.js",
+    "test": "jest --watch"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MilesTheEdgy/cryptor.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "author": "Muhammet Al-Dulaimi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MilesTheEdgy/cryptor/issues"
+  },
+  "homepage": "https://github.com/MilesTheEdgy/cryptor#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^26.6.0",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.4.1",
+    "supertest": "^6.1.6"
   }
 }
