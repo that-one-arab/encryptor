@@ -1,4 +1,4 @@
-const pool = require('../../services/db')
+const pool = require('../../services/db');
 
 module.exports = {
     /**
@@ -6,7 +6,7 @@ module.exports = {
      * @param {string} key the key to be verified again values in the database
      * @returns {boolean} returns true if key does not exist in db, returns false if key does exist in db.
      */
-    verifyUniqKey: async (key) => {
+    verifyUniqKey: async function (key) {
         // Define the query string (select message where it's private key or message id equals the newly created key).
         const query =
             'SELECT * FROM messages WHERE private_key = ? OR message_id = ?';
