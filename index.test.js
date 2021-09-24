@@ -2,7 +2,7 @@ const app = require('./app');
 const request = require('supertest');
 const pool = require('./controller/services/db');
 
-// Define message fields that already exist in the database
+// Define the original message and leave the rest of the fields as an empty string.
 const testInsertion = {
     messageID: '',
     originalMessage: 'This is a full integration test!',
