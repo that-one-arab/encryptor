@@ -11,7 +11,7 @@ describe('/api/generate-key testing suite', () => {
             // Expect data to be of type string
             expect(typeof data.body).toBe('string');
             // Expect length to be 16
-            expect(data.body.length).toBe(16);
+            return expect(data.body.length).toBe(16);
         });
     });
 });
