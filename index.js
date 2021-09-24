@@ -1,6 +1,11 @@
 require('dotenv').config();
 const pool = require('./controller/services/db');
-const startServer = require('./app.js');
+const app = require('./app.js');
+
+const startServer = () => {
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => console.log(`app is listening on port ${PORT}`));
+}
 
 /**
  * @summary Tries connecting to the DB before starting server

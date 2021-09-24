@@ -1,35 +1,17 @@
-const dotenv = require('dotenv');
-const path = require('path');
-const pool = require('../../services/db');
-const { verifyUniqKey } = require('./functions');
+const app = require('../../../app');
+const request = require('supertest');
 
-beforeEach(async () => {
-    // initialize enviroment variables
-    dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
-    // remove test insertion from db
-    await pool('DELETE FROM messages WHERE message_id = ?', ['existing_key'])
-});
-
-describe('Functions testing suite', () => {
-    describe('Function: verifyUniqKey: ', () => {
-        it('Returns true if same key does not exist in database', async () => {
-            const isKeyUniq = await verifyUniqKey('id');
-            expect(isKeyUniq).toBe(true);
-        });
-        it('Returns false if same key exists in database', async () => {
-            await pool(
-                'INSERT INTO messages (message_id, original_message, encrypted_message, private_key) VALUES (?, ?, ?, ?)',
-                [
-                    'existing_key',
-                    'Some message',
-                    'asoıhdnoıahea',
-                    'existing_privatekey',
-                ]
-            );
-            const check1 = await verifyUniqKey('existing_key');
-            expect(check1).toBe(false);
-            const check2 = await verifyUniqKey('existing_privatekey');
-            expect(check2).toBe(false);
+describe('/api/generate-key testing suite', () => {
+    describe('GET /api/generate-key', () => {
+        it('returns a string with 16 character length', async () => {
+            // Send a request to server
+            const res = request(app).get('/api/generate-key').expect(200);
+            // Await data
+            const data = await res;
+            // Expect data to be of type string
+            expect(typeof data.body).toBe('string');
+            // Expect length to be 16
+            expect(data.body.length).toBe(16);
         });
     });
 });

@@ -1,4 +1,5 @@
 const express = require('express');
+const pool = require('../../services/db')
 const generateID = require('../generate_key');
 
 const app = (module.exports = express());

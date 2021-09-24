@@ -1,4 +1,4 @@
-const verifyUniqKey = require('../functions/functions.js');
+const { verifyUniqKey } = require('../functions/functions.js');
 
 /**
  * @param {number} length defines the length of the returned string.
