@@ -27,7 +27,7 @@ export default function PrivateKeyGen({ privateKey, setPrivateKey }) {
     return (
         <div className="mb-4 row">
             <label className="col-sm-2 col-form-label">Private Key</label>
-            <div className="col-sm-7">
+            <div className="col-lg-7">
                 <input
                     className="form-control"
                     value={privateKey}
@@ -35,7 +35,7 @@ export default function PrivateKeyGen({ privateKey, setPrivateKey }) {
                     readOnly
                 />
             </div>
-            <div className="col-sm-1">
+            <div className="col-lg-1">
                 <button
                     type="button"
                     className="btn btn-outline-primary"
@@ -44,7 +44,7 @@ export default function PrivateKeyGen({ privateKey, setPrivateKey }) {
                     <i className="far fa-clipboard"></i>
                 </button>
             </div>
-            <div className="col-sm-2">
+            <div className="col-lg-2">
                 <div className="d-grid gap-2">
                     <button
                         type="button"

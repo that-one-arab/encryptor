@@ -13,15 +13,15 @@ export default function App() {
         <div className="container-fluid">
             {loading && <Loading />}
             <div className="row justify-content-around mb-5">
-                <div className="col-5">
+                <div className="col-lg-5">
                     <Encrypt refetchMessages = {refetchMessages} />
                 </div>
-                <div className="col-5">
+                <div className="col-lg-5">
                     <Decrypt />
                 </div>
             </div>
             <div className="row justify-content-center">
-                <div className="col-11">
+                <div className="col-lg-11">
                     <MessageLog messages = {response} />
                 </div>
             </div>
