@@ -1,6 +1,6 @@
 export default function MessageLog({ messages }) {
   return (
-    <div>
+    <div className = 'table-responsive' >
       <h1 className="display-6 mb-5">Messages Log</h1>
       <table className="table">
         <thead>

@@ -1,73 +1,71 @@
 import { useEffect, useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 /**
- *
+ * @hook useFetch
  * @param {string} url the URL to fetch from
- * @param {boolean} skipInitialFetch if true, skips the initial fetch request, only requests from refetch
- * function are accepted
- * @param {function} callbackFunc if specified, calls that function after fetching.
- * @param {object} fetchOptions second param for the 'fetch' API
- * @returns {object: {data, loading, refetch}} data being the data from fetch
- * loading being the loading indicator and refetch being a function that refetches
- * from the URL (Could also be used as a post/put/etc... methods)
+ * @param {boolean} onEvent define how to fetch the requested url, once component mounts, or once an event occurs
+ * @returns {object} if onEvent is true, returns a fetch async callback function, if onEvent is false, returns data from useEffect
+ * fetch function
  */
+export function useFetch({ url = undefined, onEvent = false } = {}) {
+    // Define dispatch hook function to be used with toggling loading on and off
+    const dispatch = useDispatch()
 
-export default function useFetch(
-    initialUrl,
-    { skipInitialFetch = false, callbackFunc = undefined } = {},
-    fetchOptions = {}
-) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    // Everytime useFetch is called, and 'fetchOptions' aren't passed useFetch give fetchOptions default value of {}
-    // So every time that function is called, it's a brand new object reference, which triggers an infinite loop in useEffect.
-    // giving it the initial value to 'options' state regardless of whether it was empty or not, solves the issue.
-    const [options] = useState(fetchOptions);
-    // handles updating url to refetch with new url
-    const [url, updateUrl] = useState(initialUrl)
-
-    // if skipInitialFetch is true, useEffect is completely ignored
-    // and this function get's returned from useFetch hook as a callback
-    // to make fetch requests
-    const refetch = useCallback(async () => {
-        setLoading(true);
-        try {
-            const res = await fetch(url, fetchOptions);
-            console.log('res: ', res)
-            const data = await res.json();
-            // if response returned status ok
-            if (res.ok) setData({ok: true, data});
-            // else
-            else setData({ok: false, err: data})
-            // if callback function is defined, trigger it.
-            callbackFunc && await callbackFunc()
-        } catch (error) {
-            console.error(error);
-            setData({ok: false, err: error.message})
-        } finally {
-            setLoading(false);
-        }
-    }, [url, fetchOptions, callbackFunc]);
-
-    useEffect(() => {
-        if (skipInitialFetch) return;
-        const fetchData = async () => {
-            if (!url) return
-            setLoading(true);
+    /**
+     * @summary define a callback function to be returned if onEvent is true
+     * @param {string} callbackURL takes the url to fetch from, default value is useFetch
+     * url.
+     * @returns {object} fetched response object, with data and ok properties.
+     */
+    const callFetch = useCallback(
+        async ({callbackURL = url, fetchOptions = {}} = {}) => {
+            if (!callbackURL) return;
+            dispatch({type: 'SET_LOADING_ON'})
             try {
-                const res = await fetch(url, options);
-                console.log('res: ', res)
+                const res = await fetch(callbackURL, fetchOptions);
                 const data = await res.json();
-                if (res.ok) setData({ok: true, data});
-                else setData({ok: false, err: data})
+                return { ok: true, data };
             } catch (error) {
                 console.error(error);
-                setData({ok: false, err: error})
+                return { ok: false, data: error };
             } finally {
-                setLoading(false);
+                dispatch({type: 'SET_LOADING_OFF'})
+            }
+        },
+        [url, dispatch]
+    );
+
+    // The below state values and functions mostly apply for useEffect only.
+
+    // define response from fetch
+    const [response, setResponse] = useState({});
+    // Define a fetch index used for refetching.
+    const [fetchIndex, setFetchIndex] = useState(0);
+    const refetch = () => {
+        setFetchIndex(fetchIndex + 1);
+    };
+    // define a fetch function once component mounts if onEvent is false
+    useEffect(() => {
+        if (onEvent) return;
+        const fetchData = async () => {
+            if (!url) return;
+            dispatch({type: 'SET_LOADING_ON'})
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                setResponse({ ok: true, data });
+            } catch (error) {
+                console.error(error);
+                setResponse({ ok: false, data: error });
+            } finally {
+                dispatch({type: 'SET_LOADING_OFF'})
             }
         };
         fetchData();
-    }, [skipInitialFetch, url, options]);
-    return { data, refetch, loading, updateUrl };
+    }, [url, onEvent, fetchIndex, dispatch]);
+    // if onEvent is true, return the callback fetch function
+    if (onEvent) return callFetch;
+    // else return the response from useEffect function
+    return { response, refetch };
 }

@@ -1,15 +1,17 @@
-import useFetch from './hooks/useFetch';
+import { useSelector } from 'react-redux';
+import { useFetch } from './hooks/useFetch';
 import Decrypt from './components/views/decrypt/Decrypt';
 import Encrypt from './components/views/encrypt/Encrypt';
 import MessageLog from './components/views/message_log/MessageLog';
 import Loading from './components/helpers/loading/Loading';
-// import { useState } from 'react';
 
-function App() {
-    const { data:messages, refetch: refetchMessages } = useFetch('/api/messages');
+export default function App() {
+    const loading = useSelector((state) => state.loading)
+    // Fetch all the existing messages.
+    const { response, refetch: refetchMessages } = useFetch({url: '/api/messages'})
     return (
         <div className="container-fluid">
-            {/* {status === "fetching" && <Loading />} */}
+            {loading && <Loading />}
             <div className="row justify-content-around mb-5">
                 <div className="col-5">
                     <Encrypt refetchMessages = {refetchMessages} />
@@ -20,11 +22,9 @@ function App() {
             </div>
             <div className="row justify-content-center">
                 <div className="col-11">
-                    <MessageLog messages = {messages} />
+                    <MessageLog messages = {response} />
                 </div>
             </div>
         </div>
     );
 }
-
-export default App;

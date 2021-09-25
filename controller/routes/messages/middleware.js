@@ -46,6 +46,7 @@ module.exports = {
      * in the next middleware
      */
     decryptValidation: async function (req, res, next) {
+        console.log('REQ BODY: ', req.body)
         const { privateKey } = req.body;
 
         // verify expected request body object properties.
