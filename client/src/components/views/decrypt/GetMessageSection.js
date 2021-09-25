@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useFetch } from "../../../hooks/useFetch";
+import { useState } from 'react';
+import { useFetch } from '../../../hooks/useFetch';
 
 /**
  * @component
@@ -11,15 +11,19 @@ import { useFetch } from "../../../hooks/useFetch";
  * since it will be passed as a prop to it's sibling 'DecryptMessageSection' component, that is
  * why they are passed as a prop here.
  */
-export default function GetMessageSection({privateKey, setPrivateKey, setEncryptedMessage}) {
-    const callFetch = useFetch({onEvent: true})
-    const [messageID, setMessageID] = useState('')
+export default function GetMessageSection({
+    privateKey,
+    setPrivateKey,
+    setEncryptedMessage,
+}) {
+    const callFetch = useFetch({ onEvent: true });
+    const [messageID, setMessageID] = useState('');
 
-    const handleMessageID = (e) => (setMessageID(e.target.value))
-    const handlePrivateKey = (e) => (setPrivateKey(e.target.value))
+    const handleMessageID = (e) => setMessageID(e.target.value);
+    const handlePrivateKey = (e) => setPrivateKey(e.target.value);
 
     /**
-     * @async @param {string} identifier either the messageID or the private key. 
+     * @async @param {string} identifier either the messageID or the private key.
      * @summary helper function for fetching the encrypted message using the messageID or the private key
      * @returns {void} set's state for encryptedMessage on success, returns a status regarding
      * it's error on failure.
@@ -30,7 +34,9 @@ export default function GetMessageSection({privateKey, setPrivateKey, setEncrypt
             setEncryptedMessage('');
             return { status: 'empty_field' };
         }
-        const response = await callFetch({callbackURL: `/api/messages/${identifier}`});
+        const response = await callFetch({
+            callbackURL: `/api/messages/${identifier}`,
+        });
         // If JSON string does not match the below string, setState the encrypted
         // message and return.
         if (response.data !== 'Requested message does not exist in database') {
@@ -38,14 +44,14 @@ export default function GetMessageSection({privateKey, setPrivateKey, setEncrypt
             return { status: 'found' };
         } else {
             setEncryptedMessage('');
-            return { status: 'not_found' };   
+            return { status: 'not_found' };
         }
     };
 
     /**
      * @async
      * @summary handles fetching encrypted message once called through the onClick handler.
-     * @returns {void} set's state for encryptedMessage with an error string on failure. 
+     * @returns {void} set's state for encryptedMessage with an error string on failure.
      */
     const handleFetch = async () => {
         // Attempt to fetch with message ID
@@ -60,49 +66,49 @@ export default function GetMessageSection({privateKey, setPrivateKey, setEncrypt
             return setEncryptedMessage(
                 'MESSAGE NOT FOUND please check your message ID or private key'
             );
-    }
+    };
 
     return (
         <>
-            <div className="mb-4 row">
+            <div className='mb-4 row'>
                 <label
-                    htmlFor="inputMessageID"
-                    className="col-sm-2 col-form-label"
+                    htmlFor='inputMessageID'
+                    className='col-sm-2 col-form-label'
                 >
                     Message ID
                 </label>
-                <div className="col-sm-10">
+                <div className='col-sm-10'>
                     <input
                         value={messageID}
-                        placeholder="Your message ID"
+                        placeholder='Your message ID'
                         onChange={handleMessageID}
-                        className="form-control"
-                        id="inputMessageID"
+                        className='form-control'
+                        id='inputMessageID'
                     />
                 </div>
             </div>
-            <div className="mb-4 row">
+            <div className='mb-4 row'>
                 <label
-                    htmlFor="inputPrivateKey"
-                    className="col-sm-2 col-form-label"
+                    htmlFor='inputPrivateKey'
+                    className='col-sm-2 col-form-label'
                 >
                     Private Key
                 </label>
-                <div className="col-sm-10">
+                <div className='col-sm-10'>
                     <input
-                        className="form-control"
-                        id="inputPrivateKey"
+                        className='form-control'
+                        id='inputPrivateKey'
                         value={privateKey}
-                        placeholder="Your private key"
+                        placeholder='Your private key'
                         onChange={handlePrivateKey}
                     />
                 </div>
             </div>
-            <div className="mb-4 row">
-                <div className="d-grid gap-2">
+            <div className='mb-4 row'>
+                <div className='d-grid gap-2'>
                     <button
-                        type="button"
-                        className="btn btn-info"
+                        type='button'
+                        className='btn btn-info'
                         onClick={handleFetch}
                     >
                         Retrieve Message

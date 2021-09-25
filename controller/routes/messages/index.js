@@ -59,6 +59,11 @@ app.get('/:identifer', async (req, res) => {
     return res.json({ messageID, encryptedMessage });
 });
 
+/**
+ * @async @summary Finds, decrypts and returns a message using it's private key.
+ * @param {string} privateKey The private key used to find and decrypt a message.
+ * @returns {string} returns the decrypted message.
+ */
 app.patch('/decrypt', decryptValidation, async (req, res) => {
     // private key to be decrypted with
     const { privateKey } = req.body;
@@ -93,7 +98,7 @@ app.post('/', msgValidation, async (req, res) => {
             new Date(),
         ]);
 
-        // Return the newly created messagID and encrypted message
+        // Return the newly created messageID and encrypted message
         res.status(201).json({ messageID, encryptedMessage });
     } catch (error) {
         console.log('at POST /api/messages: ', error);

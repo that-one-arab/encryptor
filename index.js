@@ -1,7 +1,12 @@
+// Apply enviroment variables
 require('dotenv').config();
+
 const pool = require('./controller/services/db');
 const app = require('./app.js');
 
+/**
+ * @summary Starts express server
+ */
 const startServer = () => {
     const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => console.log(`app is listening on port ${PORT}`));

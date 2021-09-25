@@ -1,9 +1,7 @@
-import "./loading.css"
+import './loading.css';
 
-function Loading () {
-    return (
-      <div className="loading"></div>
-    )
+function Loading() {
+    return <div className='loading'></div>;
 }
 
 export default Loading;

@@ -2,6 +2,12 @@ const app = require('./app');
 const request = require('supertest');
 const pool = require('./controller/services/db');
 
+/**
+ * @description This test suite runs a full integration test. The 'testInsertion'
+ * object is used to encrypt and send a message, then decrypt it. You can play
+ * around with original message property but leave the other fields as an empty string
+ * because those fields get inserted automatically in the tests.
+ */
 // Define the original message and leave the rest of the fields as an empty string.
 const testInsertion = {
     messageID: '',

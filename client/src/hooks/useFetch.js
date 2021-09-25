@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
  */
 export function useFetch({ url = undefined, onEvent = false } = {}) {
     // Define dispatch hook function to be used with toggling loading on and off
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     /**
      * @summary define a callback function to be returned if onEvent is true
@@ -19,9 +19,9 @@ export function useFetch({ url = undefined, onEvent = false } = {}) {
      * @returns {object} fetched response object, with data and ok properties.
      */
     const callFetch = useCallback(
-        async ({callbackURL = url, fetchOptions = {}} = {}) => {
+        async ({ callbackURL = url, fetchOptions = {} } = {}) => {
             if (!callbackURL) return;
-            dispatch({type: 'SET_LOADING_ON'})
+            dispatch({ type: 'SET_LOADING_ON' });
             try {
                 const res = await fetch(callbackURL, fetchOptions);
                 const data = await res.json();
@@ -30,7 +30,7 @@ export function useFetch({ url = undefined, onEvent = false } = {}) {
                 console.error(error);
                 return { ok: false, data: error };
             } finally {
-                dispatch({type: 'SET_LOADING_OFF'})
+                dispatch({ type: 'SET_LOADING_OFF' });
             }
         },
         [url, dispatch]
@@ -50,7 +50,7 @@ export function useFetch({ url = undefined, onEvent = false } = {}) {
         if (onEvent) return;
         const fetchData = async () => {
             if (!url) return;
-            dispatch({type: 'SET_LOADING_ON'})
+            dispatch({ type: 'SET_LOADING_ON' });
             try {
                 const res = await fetch(url);
                 const data = await res.json();
@@ -59,7 +59,7 @@ export function useFetch({ url = undefined, onEvent = false } = {}) {
                 console.error(error);
                 setResponse({ ok: false, data: error });
             } finally {
-                dispatch({type: 'SET_LOADING_OFF'})
+                dispatch({ type: 'SET_LOADING_OFF' });
             }
         };
         fetchData();

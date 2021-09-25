@@ -1,9 +1,12 @@
-import { createStore } from 'redux'
+import { createStore } from 'redux';
 
 const initialState = {
     loading: false,
 };
 
+/**
+ * @function reducer Used to toggle loading on and off globally in useFetch hook.
+ */
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_LOADING_ON':
@@ -17,8 +20,8 @@ const reducer = (state = initialState, action) => {
                 loading: false,
             };
         default:
-            return state
+            return state;
     }
 };
 
-export const store = createStore(reducer)
+export const store = createStore(reducer);

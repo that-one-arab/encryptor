@@ -12,7 +12,7 @@ export default function Decrypt() {
 
     return (
         <div>
-            <h1 className="display-6 mb-5">Decrypt my message</h1>
+            <h1 className='display-6 mb-5'>Decrypt my message</h1>
             <GetMessageSection
                 setEncryptedMessage={setEncryptedMessage}
                 privateKey={privateKey}

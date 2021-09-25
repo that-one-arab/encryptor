@@ -2,7 +2,7 @@
  * Configuration for DB
  * field values taken from .env
  * I needed to define it as a function instead of an object because
- * enviroment variables can't be read in the object
+ * enviroment variables can't be read in the object when running tests.
  */
 
 module.exports = function returnConfig() {

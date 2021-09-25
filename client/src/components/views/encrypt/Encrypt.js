@@ -23,49 +23,49 @@ export function EncryptMessageSection({ privateKey, refetchMessages }) {
                 }),
             },
         });
-        setEncryptedMessage(response.data.encryptedMessage)
-        refetchMessages()
+        setEncryptedMessage(response.data.encryptedMessage);
+        refetchMessages();
     };
 
     return (
         <>
-            <div className="mb-4 row">
+            <div className='mb-4 row'>
                 <label
-                    htmlFor="inputMessage"
-                    className="col-sm-2 col-form-label"
+                    htmlFor='inputMessage'
+                    className='col-sm-2 col-form-label'
                     value={originalMessage}
                 >
                     Your message
                 </label>
-                <div className="col-sm-10">
+                <div className='col-sm-10'>
                     <input
-                        className="form-control"
-                        id="inputMessage"
+                        className='form-control'
+                        id='inputMessage'
                         onChange={originalMessageHandler}
                     />
                 </div>
             </div>
-            <div className="mb-4 row">
-                <div className="d-grid gap-2">
+            <div className='mb-4 row'>
+                <div className='d-grid gap-2'>
                     <button
-                        type="button"
-                        className="btn btn-success"
+                        type='button'
+                        className='btn btn-success'
                         onClick={encryptMessageHandler}
                     >
                         Submit / Encrypt
                     </button>
                 </div>
             </div>
-            <div className="mb-4 row">
-                <label className="col-sm-2 col-form-label">
+            <div className='mb-4 row'>
+                <label className='col-sm-2 col-form-label'>
                     Encrypted Message
                 </label>
-                <div className="col-sm-10">
+                <div className='col-sm-10'>
                     <textarea
-                        className="form-control"
-                        rows="5"
+                        className='form-control'
+                        rows='5'
                         readOnly
-                        placeholder="Your message after submitting the encryption request..."
+                        placeholder='Your message after submitting the encryption request...'
                         value={encryptedMessage}
                     ></textarea>{' '}
                 </div>
@@ -83,12 +83,15 @@ export default function Encrypt({ refetchMessages }) {
 
     return (
         <div>
-            <h1 className="display-6 mb-5">Encrypt my message</h1>
+            <h1 className='display-6 mb-5'>Encrypt my message</h1>
             <PrivateKeyGen
                 privateKey={privateKey}
                 setPrivateKey={setPrivateKey}
             />
-            <EncryptMessageSection privateKey={privateKey} refetchMessages={refetchMessages} />
+            <EncryptMessageSection
+                privateKey={privateKey}
+                refetchMessages={refetchMessages}
+            />
         </div>
     );
 }

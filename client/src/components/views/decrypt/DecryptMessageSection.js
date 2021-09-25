@@ -12,7 +12,7 @@ import { useFetch } from '../../../hooks/useFetch';
 export default function DecryptMessageSection({
     encryptedMessage,
     setEncryptedMessage,
-    privateKey, 
+    privateKey,
 }) {
     // Define the fetch callback function
     const callFetch = useFetch({ onEvent: true });
@@ -41,48 +41,48 @@ export default function DecryptMessageSection({
         setResponse(response);
     };
 
-    const encryptedMessageHandler = (e) => (setEncryptedMessage(e.target.value))
+    const encryptedMessageHandler = (e) => setEncryptedMessage(e.target.value);
 
     return (
         <>
-            <div className="mb-4 row">
+            <div className='mb-4 row'>
                 <label
-                    htmlFor="inputEncryptedMessage"
-                    className="col-sm-2 col-form-label"
+                    htmlFor='inputEncryptedMessage'
+                    className='col-sm-2 col-form-label'
                 >
                     Encrypted Message
                 </label>
-                <div className="col-sm-10">
+                <div className='col-sm-10'>
                     <textarea
-                        id="inputEncryptedMessage"
-                        className="form-control"
-                        rows="5"
-                        onChange = {encryptedMessageHandler}
+                        id='inputEncryptedMessage'
+                        className='form-control'
+                        rows='5'
+                        onChange={encryptedMessageHandler}
                         value={encryptedMessage}
-                        placeholder="Your encrypted message"
+                        placeholder='Your encrypted message'
                     ></textarea>{' '}
                 </div>
             </div>
-            <div className="mb-4 row">
-                <div className="d-grid gap-2">
+            <div className='mb-4 row'>
+                <div className='d-grid gap-2'>
                     <button
-                        type="button"
-                        className="btn btn-danger"
+                        type='button'
+                        className='btn btn-danger'
                         onClick={handleDecrypt}
                     >
                         Decrypt Message
                     </button>
                 </div>
             </div>
-            <div className="mb-4 row">
-                <label className="col-sm-2 col-form-label">
+            <div className='mb-4 row'>
+                <label className='col-sm-2 col-form-label'>
                     Decrypted Message
                 </label>
-                <div className="col-sm-10">
+                <div className='col-sm-10'>
                     <textarea
-                        className="form-control"
-                        rows="5"
-                        placeholder="Your decrypted message"
+                        className='form-control'
+                        rows='5'
+                        placeholder='Your decrypted message'
                         value={response.data && response.data.decryptedMessage}
                         readOnly
                     ></textarea>{' '}
