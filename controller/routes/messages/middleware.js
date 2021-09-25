@@ -9,6 +9,8 @@ module.exports = {
     msgValidation: async function (req, res, next) {
         const { originalMessage, privateKey } = req.body;
 
+        console.log(req.body)
+
         // verify expected request body object properties.
         if (
             !req.body.hasOwnProperty('originalMessage') ||

@@ -1,114 +1,73 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
-export const useFetch = (url, skip = false, initialOptions = {}) => {
-    console.log('render');
+/**
+ *
+ * @param {string} url the URL to fetch from
+ * @param {boolean} skipInitialFetch if true, skips the initial fetch request, only requests from refetch
+ * function are accepted
+ * @param {function} callbackFunc if specified, calls that function after fetching.
+ * @param {object} fetchOptions second param for the 'fetch' API
+ * @returns {object: {data, loading, refetch}} data being the data from fetch
+ * loading being the loading indicator and refetch being a function that refetches
+ * from the URL (Could also be used as a post/put/etc... methods)
+ */
 
-	const initialState = {
-		options: initialOptions,
-		data: '',
-		isLoading: false,
-		hasError: false,
-		errorMessage: [],
-		refetchIndex: 0,
-	}
+export default function useFetch(
+    initialUrl,
+    { skipInitialFetch = false, callbackFunc = undefined } = {},
+    fetchOptions = {}
+) {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    // Everytime useFetch is called, and 'fetchOptions' aren't passed useFetch give fetchOptions default value of {}
+    // So every time that function is called, it's a brand new object reference, which triggers an infinite loop in useEffect.
+    // giving it the initial value to 'options' state regardless of whether it was empty or not, solves the issue.
+    const [options] = useState(fetchOptions);
+    // handles updating url to refetch with new url
+    const [url, updateUrl] = useState(initialUrl)
 
-	const reducer = (state = initialState, action) => {
-		switch (action.type) {
-			case 'SET_DATA':
-				return {
-					...state,
-					data: action.payload
-				}
-			case 'SET_LOADING_TRUE':
-				return {
-					...state,
-					isLoading: true
-				}
-			case 'SET_LOADING_FALSE':
-				return {
-					...state,
-					isLoading: false
-				}
-			case 'SET_ERROR':
-				return {
-					...state,
-					hasError: true
-				}
-			case 'SET_ERROR_MESSAGE':
-				return {
-					...state,
-					errorMessage: action.payload
-				}
-			case 'SET_REFETCH_INDEX':
-				return {
-					...state,
-					refetchIndex: state.refetchIndex++
-				}
-			default:
-				return state
-		}
-	}
-
-	const [state, dispatch] = useReducer(reducer, initialState)
-
-    const refetch = () =>
-		dispatch({type: 'SET_REFETCH_INDEX'})
+    // if skipInitialFetch is true, useEffect is completely ignored
+    // and this function get's returned from useFetch hook as a callback
+    // to make fetch requests
+    const refetch = useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(url, fetchOptions);
+            console.log('res: ', res)
+            const data = await res.json();
+            // if response returned status ok
+            if (res.ok) setData({ok: true, data});
+            // else
+            else setData({ok: false, err: data})
+            // if callback function is defined, trigger it.
+            callbackFunc && await callbackFunc()
+        } catch (error) {
+            console.error(error);
+            setData({ok: false, err: error.message})
+        } finally {
+            setLoading(false);
+        }
+    }, [url, fetchOptions, callbackFunc]);
 
     useEffect(() => {
-		const fetchData = async () => {
-			if (skip) return;
-			dispatch({type: 'SET_LOADING_TRUE'});
-			try {
-				const response = await fetch(url, state.options);
-				console.log('response: ', response)
-				const result = await response.json();
-				if (response.ok) {
-					dispatch({type: 'SET_DATA', payload: result})
-				} else {
-					dispatch({type: 'SET_ERROR'});
-					dispatch({type: 'SET_ERROR_MESSAGE', payload: result})
-				}
-			} catch (err) {
-				dispatch({type: 'SET_ERROR'});
-				dispatch({type: 'SET_ERROR_MESSAGE', payload: err})
-			} finally {
-				dispatch({type: 'SET_LOADING_FALSE'});
-			}
-		};
+        if (skipInitialFetch) return;
+        const fetchData = async () => {
+            if (!url) return
+            setLoading(true);
+            try {
+                const res = await fetch(url, options);
+                console.log('res: ', res)
+                const data = await res.json();
+                if (res.ok) setData({ok: true, data});
+                else setData({ok: false, err: data})
+            } catch (error) {
+                console.error(error);
+                setData({ok: false, err: error})
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchData();
-    }, [url, skip, state.refetchIndex, state.options]);
-
-	return {
-		...state,
-        refetch,
-    };
-};
-
-export const usePost = ({url, headers, payload}) => {
-    const [res, setRes] = useState({data: null, error: null, isLoading: false});
-    const [error, setError] = useState()
-    // You POST method here
-    const callAPI = useCallback(() => {
-		if (skip) return;
-		dispatch({type: 'SET_LOADING_TRUE'});
-		try {
-			const response = await fetch(url, state.options);
-			console.log('response: ', response)
-			const result = await response.json();
-			if (response.ok) {
-				dispatch({type: 'SET_DATA', payload: result})
-			} else {
-				dispatch({type: 'SET_ERROR'});
-				dispatch({type: 'SET_ERROR_MESSAGE', payload: result})
-			}
-		} catch (err) {
-			dispatch({type: 'SET_ERROR'});
-			dispatch({type: 'SET_ERROR_MESSAGE', payload: err})
-		} finally {
-			dispatch({type: 'SET_LOADING_FALSE'});
-		}
-	})
-    return [res, callAPI];
+    }, [skipInitialFetch, url, options]);
+    return { data, refetch, loading, updateUrl };
 }
-
-export default useFetch;

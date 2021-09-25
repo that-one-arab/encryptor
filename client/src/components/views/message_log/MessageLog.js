@@ -1,5 +1,4 @@
 export default function MessageLog({ messages }) {
-  // console.log('messages: ', messages)
   return (
     <div>
       <h1 className="display-6 mb-5">Messages Log</h1>
@@ -17,7 +16,7 @@ export default function MessageLog({ messages }) {
         </thead>
         <tbody>
           {
-            messages && messages.map((message, i) => {
+            messages.data && messages.data.map((message, i) => {
               return (
                 <tr key = {message.messageID} >
                   <th scope="row">{i+1}</th>

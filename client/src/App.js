@@ -6,14 +6,13 @@ import Loading from './components/helpers/loading/Loading';
 // import { useState } from 'react';
 
 function App() {
-    // const { status, data } = useFetch('/api/messages');
-    // console.table('data: ', data);
+    const { data:messages, refetch: refetchMessages } = useFetch('/api/messages');
     return (
         <div className="container-fluid">
             {/* {status === "fetching" && <Loading />} */}
             <div className="row justify-content-around mb-5">
                 <div className="col-5">
-                    <Encrypt />
+                    <Encrypt refetchMessages = {refetchMessages} />
                 </div>
                 <div className="col-5">
                     <Decrypt />
@@ -21,7 +20,7 @@ function App() {
             </div>
             <div className="row justify-content-center">
                 <div className="col-11">
-                    <MessageLog />
+                    <MessageLog messages = {messages} />
                 </div>
             </div>
         </div>
