@@ -9,10 +9,15 @@ const app = express();
 
 // Request body parsing
 app.use(express.json());
+app.use(express.static(__dirname + '/client/build'));
 
 // Use the routes defined above
 app.use('/api/messages', messagesRoute);
 app.use('/api/generate-key', generateKeyRoute);
+
+app.get('*', (req, res) => {
+    res.sendFile(__dirname + '/client/build/index.html');
+});
 
 // CHANGE ME
 module.exports = app;
