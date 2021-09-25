@@ -1,5 +1,4 @@
 const { verifyUniqKey } = require('../../lib/functions/functions');
-const pool = require('../../services/db');
 
 module.exports = {
     /**
@@ -8,8 +7,6 @@ module.exports = {
      */
     msgValidation: async function (req, res, next) {
         const { originalMessage, privateKey } = req.body;
-
-        console.log(req.body)
 
         // verify expected request body object properties.
         if (
@@ -46,35 +43,20 @@ module.exports = {
      * in the next middleware
      */
     decryptValidation: async function (req, res, next) {
-        console.log('REQ BODY: ', req.body)
-        const { privateKey } = req.body;
+        const { privateKey, encryptedMessage } = req.body;
 
         // verify expected request body object properties.
-        if (!req.body.hasOwnProperty('privateKey'))
+        if (
+            !req.body.hasOwnProperty('privateKey') ||
+            !req.body.hasOwnProperty('encryptedMessage')
+        )
             return res.status(406).json('Unexpected input');
 
         // check if input is empty
-        if (!privateKey.trim())
+        if (!privateKey.trim() || !encryptedMessage.trim())
             return res.status(406).json('Empty input is not allowed');
 
-        try {
-            // Define the query (Select the encrypted message if private key EQUALS identifier)
-            const query =
-                'SELECT encrypted_message AS encryptedMessage FROM messages WHERE private_key = ?';
-            const result = await pool(query, [privateKey]);
-
-            if (result.length === 0)
-                return res
-                    .status(404)
-                    .json('Message to be encrypted was not found');
-            // if all is good attach encrypted message to res.locals and pass to the next function/middleware
-            res.locals = result[0];
-            next();
-        } catch (error) {
-            console.log(error);
-            return res
-                .status(500)
-                .json('Server error while decrypting your message');
-        }
+        // Call next middleware
+        next();
     },
 };

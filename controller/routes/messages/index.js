@@ -62,13 +62,16 @@ app.get('/:identifer', async (req, res) => {
 /**
  * @async @summary Finds, decrypts and returns a message using it's private key.
  * @param {string} privateKey The private key used to find and decrypt a message.
+ * @param {string} encryptedMessage The encryptedMessage to be decrypted.
  * @returns {string} returns the decrypted message.
  */
 app.patch('/decrypt', decryptValidation, async (req, res) => {
     // private key to be decrypted with
-    const { privateKey } = req.body;
-    // encrypted message passed from 'decryptValidation' middleware
-    const { encryptedMessage } = res.locals;
+    const { privateKey, encryptedMessage } = req.body;
+
+    // // encrypted message passed from 'decryptValidation' middleware
+    // const { encryptedMessage } = res.locals;
+
     // decrypt it using cryptor
     const decryptedMessage = cryptor.decrypt(privateKey, encryptedMessage);
     // return it

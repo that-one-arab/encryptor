@@ -21,9 +21,8 @@ export default function DecryptMessageSection({
     /**
      * @async
      * @summary Handles the message decryption after it get's called with onClick handler.
-     * sends a request to the server to decrypt the message using it's private key in it's request
-     * body. Set's the response state and response itself is used to render the decrypted message text
-     * below.
+     * sends a request to the server to decrypt the message using it's private key and the encrypted message in it's request
+     * body. Set's the response state and response itself is used to render the decrypted message text below.
      */
     const handleDecrypt = async () => {
         const response = await callFetch({
@@ -35,6 +34,7 @@ export default function DecryptMessageSection({
                 },
                 body: JSON.stringify({
                     privateKey,
+                    encryptedMessage,
                 }),
             },
         });
