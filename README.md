@@ -7,7 +7,7 @@
 - Save your encrypted message to the cloud
 - Access and decrypt your encrypted message at any point and time using the previously generated private key
 
-A demo for the application can be found [here](https://encryptor-app.herokuapp.com/)
+A demo for the application can be found [here](https://projects.encryptor.muhammed-aldulaimi.com/)
 
 ### Stack And Libraries
 - **Front End:** React
