@@ -37,7 +37,7 @@ Or if you would like to make changes to the files, run it with
 
 This will start the project with nodemon, which will listen to any active changes in the directory.
 
-The react build is already
+The react build is already pushed to the repository. If you would like to make changes to the front end, make sure to cd to client directory, run `$ npm i` to install the dependencies, then `$ npm start`
 
 ### Further Information
 
