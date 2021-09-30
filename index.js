@@ -16,7 +16,7 @@ const startServer = () => {
  * @summary Tries connecting to the DB before starting server
  */
 async function connectDB() {
-    let retries = 5;
+    let retries = 10;
     while (retries) {
         try {
             await pool('SELECT NOW()');
@@ -28,7 +28,7 @@ async function connectDB() {
             console.log('Could not connect to database: ', error);
             retries -= 1;
             console.log('retries left: ' + retries);
-            await new Promise((res) => setTimeout(res, 5000));
+            await new Promise((res) => setTimeout(res, 8000));
         }
     }
 }
